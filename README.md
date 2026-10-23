@@ -2,7 +2,26 @@
   <img src="assets/mascot/pip_flight_loop.gif" alt="Pip, the courier bird" width="200">
 </p>
 
-# AI Job Search
+# AI Job Search IL
+
+## Start here in Codex
+
+This fork targets **high-tech roles in Israel**, plus potential relocation to the **United Kingdom, New York City, and San Francisco**. Open this repository folder in Codex and use natural-language requests. [AGENTS.md](AGENTS.md) routes them to the existing shared workflows; no separate application server or Anthropic API key is needed for that workflow.
+
+- “Refresh my profile from LinkedIn in the connected Chrome browser.”
+- “Find high-tech roles in Israel using my local profile.”
+- “Search UK, New York, and San Francisco roles; show sponsorship evidence separately.”
+- “Evaluate this posting” or “Draft an application for this role.” Drafting does not submit anything.
+
+Candidate facts and preferences live in **`.local/profile.md`**, excluded from Git. Source documents live in the ignored `documents/` subfolders. Keep the tracked profile and CV examples as templates. Do not run the legacy onboarding path that puts personal data into tracked files. See [AGENTS.md](AGENTS.md) for the exact read/write substitutions and [search strategy](.claude/skills/job-scraper/search-queries.md) for market coverage.
+
+Research can use the connected browser and web tools immediately. Python 3.10+ runs the existing integrity, deduplication, ranking, and verification helpers. Bun is optional for portal CLIs; without it, use the documented web fallback. PDF production requires a working compiler and visual verification before documents are called ready. The initial setup does not install or run every upstream optional integration.
+
+Codex's project entry point follows the [official AGENTS.md guidance](https://learn.chatgpt.com/docs/agent-configuration/agents-md). The upstream guide below remains for reference; Claude slash commands, prerequisites, and tracked-profile onboarding are legacy runtime instructions, not the Codex entry path.
+
+---
+
+## Upstream project guide
 
 *The job search that runs on your machine.*
 

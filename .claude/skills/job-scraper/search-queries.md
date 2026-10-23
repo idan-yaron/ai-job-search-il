@@ -1,90 +1,69 @@
-# Search Queries for Job Scraper
+# Search strategy: high-tech in Israel and selected relocation markets
 
-<!-- SETUP: Customize these queries based on your skills, target roles, and location -->
+The default scope is Israel, plus the United Kingdom, New York City, and San Francisco. Read `.local/profile.md` for the candidate's actual role targets, sponsorship needs, language proficiency, and confirmed preferences. This tracked file contains reusable market strategy, not personal résumé details.
 
-## Installed portal CLIs (primary for `/scrape`)
+## Market coverage
 
-`/scrape` discovers every portal skill under `.agents/skills/*/SKILL.md` and runs its CLI first. Shipped country-agnostic CLIs include `linkedin-search` and `freehire-search`; Danish demos and any skill you add with `/add-portal` are included the same way. You do **not** need a matching `site:` line below for those CLIs to run.
+Run each market separately and label results by market. A default search samples the top three function categories in every requested market, keeping Israel first in the presentation. A focus request can narrow this. A low-volume sample is not an exhaustive market search; list queries, sources, dates, and coverage limits.
 
-The `site:` query templates in this file are the **WebSearch fallback** — for portals without a CLI, company career pages, or when a CLI fails.
+| Market | Search location | Treatment |
+|---|---|---|
+| Israel | Israel; optionally Tel Aviv and other Israeli tech hubs | Primary market. Verify actual office and commute constraints; do not silently restrict all Israel to Tel Aviv. |
+| United Kingdom | United Kingdom; London as an additional focused query | Relocation market. Do not reduce the UK to London only. |
+| New York City | New York, United States | Relocation market. Check city/metro location; do not accept statewide results as NYC automatically. |
+| San Francisco | San Francisco, California, United States | Relocation market. Flag wider Bay Area results separately pending geographic approval. |
 
-**Language scope:** write every query category in every language listed in your CLAUDE.md Languages table (typically 1-2, sometimes more). A posting requiring a language you have *not* declared, as a job condition, is excluded before scoring; a posting requiring a *higher level* than you declared in a language you *do* work in is flagged for your own judgment, not excluded — see `04-job-evaluation.md`'s Language Gate, the single source of truth for this rule. Translate each category's keywords rather than machine-translating word-for-word (e.g. "Frontend Developer" -> "Desarrollador Frontend", not a literal word-for-word translation) if you work in more than one language.
+Remote roles qualify only when the employer permits employment from Israel or an agreed relocation destination. US-only remote is not work-from-Israel eligibility. A relocation package is not visa sponsorship. Apply `04-job-evaluation.md` before treating any match as feasible.
 
-## Search Sites
+## Sources and access
 
-Primary (your market's job boards - scaffold one with `/add-portal`):
-- **[YOUR_JOB_BOARD]** - your market's largest general job board
-- **linkedin.com/jobs** - LinkedIn job listings (filter: [YOUR_COUNTRY] / [YOUR_CITY]); also covered by `linkedin-search` CLI
-- **[YOUR_INDUSTRY_JOB_BOARD]** - a niche/industry board for your field (optional)
-- **[YOUR_ADDITIONAL_JOB_BOARD]** - another major board for your market (optional)
+- Employer careers pages and their linked ATS postings are the final source for requirements, live status, location, and sponsorship.
+- LinkedIn provides discovery across all four markets, through connected Chrome or the existing `linkedin-search` CLI.
+- The existing `freehire-search` CLI can provide additional discovery, subject to verifying its geography and employer source.
+- Web search over employer careers pages and ATS domains provides a fallback and another discovery channel. Do not label a search snippet as a verified opening.
+- Danish demo skills remain disabled. Do not install a new portal adapter just to begin this search.
 
-Secondary (company career pages via Google):
-- Direct Google searches with `site:` filters for known target companies
+Read each enabled portal's `SKILL.md` for actual flags. Missing Bun or a failing source triggers the existing web fallback, with the failure reported. Never report a timeout, login wall, or dropped location filter as zero jobs.
 
-## Query Categories
+For LinkedIn, pass each market explicitly through `--location`; combine with the candidate's title/function query and `--jobage 14 --limit 20 --format json`.
+For Freehire, use country facets for Israel/UK and city facets for NYC/SF after checking the live facet vocabulary. Its region/country/city facets form an **OR group**: combining US country and NYC city broadens to the whole US, so never use that combination to claim a city-only search. Verify the returned location in all cases.
 
-Queries are grouped by priority. Write **each category in every language from your Languages table** (see Language scope above). Combine each query with your location terms (e.g. your city, region, or metro area) where the site supports it.
+## Function categories
 
-**Organize by function, not job title.** The same underlying work carries different titles across companies and markets (a "Data Scientist" role at one employer may be posted as "Insights Analyst" or "Data Consultant" at another). Name each priority category after the function it covers, and list several plausible job titles as query variants within that category rather than betting an entire priority tier on one exact title string.
+For this product-focused starting strategy, use the candidate's approved seniority range. Keep management and individual-contributor tracks separate; role scope matters more than title. Do not add VP/CPO, junior, engineering, or legal-only roles solely because the candidate has adjacent experience.
 
-### Priority 1: [YOUR_PRIMARY_ROLE_TYPE]
+### Priority 1: Product leadership and strategy
 
-These match your strongest and most desired career direction.
+Title variants: Director of Product, Director of Product Management, Head of Product, Group Product Manager. Add AI, data platform, SaaS, or enterprise software when relevant to the candidate profile. Assess team, strategy, roadmap, commercial ownership, and decision scope from the posting rather than title alone.
 
-```
-site:[YOUR_JOB_BOARD] "[YOUR_PRIMARY_JOB_TITLE_1]" [YOUR_CITY]
-site:[YOUR_JOB_BOARD] "[YOUR_PRIMARY_JOB_TITLE_2]" [YOUR_CITY]
-site:[YOUR_JOB_BOARD] "[YOUR_KEY_SKILL]" [YOUR_CITY]
-site:linkedin.com/jobs "[YOUR_PRIMARY_JOB_TITLE_1]" [YOUR_COUNTRY]
-```
+### Priority 2: AI and data product ownership
 
-### Priority 2: [YOUR_DOMAIN_EXPERTISE]
+Title variants: Senior Product Manager, Staff Product Manager, Principal Product Manager, Technical Product Manager. Function variants: AI products, GenAI, AI agents, data products, data platforms, APIs, analytics. An AI label does not establish an ML engineering requirement or candidate coding proficiency.
 
-These match your domain expertise.
+### Priority 3: Broader high-tech product roles
 
-```
-site:[YOUR_JOB_BOARD] [YOUR_DOMAIN_KEYWORD_1] [YOUR_CITY] OR [YOUR_REGION]
-site:[YOUR_JOB_BOARD] [YOUR_DOMAIN_KEYWORD_2] [YOUR_COUNTRY]
-site:linkedin.com/jobs [YOUR_DOMAIN_KEYWORD_1] [YOUR_CITY] [YOUR_COUNTRY]
-```
+Senior product leadership and senior IC work in B2B SaaS, developer/platform products, fintech, insurtech, cybersecurity, or other technology companies where the actual responsibilities fit. These are discovery categories, not claims that the candidate has expertise in every sector.
 
-### Priority 3: [YOUR_ADJACENT_ROLE_TYPE]
+English is the initial query language in all markets. Add Hebrew title variants for Israel when supported by the private profile: מנהל מוצר בכיר, מנהלת מוצר בכירה, ראש תחום מוצר, דירקטור מוצר, מוצרי נתונים, בינה מלאכותית. Search keywords do not declare a language proficiency.
 
-Adjacent roles you could pivot into.
+## Web fallback examples
 
-```
-site:[YOUR_JOB_BOARD] "[YOUR_ADJACENT_TITLE_1]" [YOUR_KEY_SKILL] [YOUR_CITY]
-site:[YOUR_JOB_BOARD] "[YOUR_ADJACENT_TITLE_2]" [YOUR_KEY_SKILL] [YOUR_CITY]
-```
+Substitute the role and one market at a time; verify real posting pages after discovery:
 
-### Priority 4: Broader Technical / Consulting
-
-Wider net for general technical roles.
-
-```
-site:[YOUR_JOB_BOARD] [YOUR_KEY_SKILL] developer [YOUR_CITY]
-site:linkedin.com/jobs "[YOUR_KEY_SKILL] developer" [YOUR_CITY]
-site:[YOUR_JOB_BOARD] "technical consultant" [YOUR_DOMAIN] [YOUR_CITY]
+```text
+site:linkedin.com/jobs/view "Director of Product" "Israel"
+site:linkedin.com/jobs/view "Senior Product Manager" "United Kingdom"
+site:job-boards.greenhouse.io "Product" "New York"
+site:jobs.lever.co "Product" "San Francisco"
+site:jobs.ashbyhq.com "Product" "Israel"
 ```
 
-## Location Filter
+Use the employer's own careers site to resolve missing details. A broad company sponsorship statement is a lead, not proof for an individual role. Search without the word sponsorship too, to avoid silently discarding promising roles whose policies need verification.
 
-When evaluating results, verify the job location is within reasonable commute distance from your home. Define acceptable areas:
-- [YOUR_CITY] and surrounding areas
-- [ACCEPTABLE_AREA_1]
-- [ACCEPTABLE_AREA_2]
-- [BORDERLINE_AREA] (borderline - ~X min by transit)
-- [TOO_FAR_AREA] (too far)
+## Freshness, fit, and reporting
 
-## Language Filter
+Prefer postings from the last 14 days. Older postings with future stated deadlines may be retained. Unknown posting dates stay visibly unknown. A live source check is required before recommending a role; preserve exact URL, title, company, location, observed date, stated posting date/deadline, and evidence excerpt.
 
-Your working languages and levels are in CLAUDE.md's Languages table. When filtering scraped results, apply `04-job-evaluation.md`'s Language Gate: a posting requiring a language you haven't declared at all is excluded; a posting requiring a higher level than you declared in a language you do work in is not excluded, flag it clearly instead (see `job-scraper/SKILL.md`'s Step 3 "Quick Fit Assessment" for how the flag surfaces in `/scrape` output). Postings simply *written* in a language you don't work in, that don't require it on the job, are fine.
+Separate confirmed matches, conditional leads, exclusions, and unreachable pages. Show skill/experience fit separately from work-authorization feasibility. Every relocation lead must show sponsorship as role-confirmed / unknown / explicitly unavailable, with the source and date. Exclude an explicit no-sponsorship role when the candidate needs sponsorship; keep unknowns conditional, never verified.
 
-## Date Filter
-
-Only include jobs posted within the last 14 days, or with an application deadline that has not yet passed. If a posting date cannot be determined, include it but flag as "date unknown".
-
-## Adapting Queries
-
-If the user specifies a focus area, select queries from the matching category and also generate 2-3 custom queries for that focus. For example:
-- "/scrape [focus_area]" -> relevant category queries + custom focus-specific queries
+Use existing deduplication, tracker, posting-integrity, and state helpers. Keep personal evidence in ignored local files. Never apply, contact an employer, or change LinkedIn as part of a search.

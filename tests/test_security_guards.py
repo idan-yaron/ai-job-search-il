@@ -577,6 +577,15 @@ class GitignorePatternBehaviorTests(unittest.TestCase):
         )
         shutil.copy(REPO_ROOT / ".gitignore", self.root / ".gitignore")
 
+    def test_private_profile_and_sources_are_ignored(self):
+        for path in (".local/profile.md", ".local/validation.log", "documents/linkedin/profile.md"):
+            with self.subTest(path=path):
+                result = subprocess.run(
+                    ["git", "-C", str(self.root), "check-ignore", "-q", path],
+                    capture_output=True,
+                )
+                self.assertEqual(result.returncode, 0, f"{path}: personal data is not ignored")
+
     def test_upskill_reports_ignored_at_depth_but_skill_md_stays_tracked(self):
         # The upskill skill resolves `upskill/` relative to its own directory
         # (the same observed behavior the **/job_scraper rules exist for), so a
