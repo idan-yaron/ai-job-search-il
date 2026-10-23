@@ -139,6 +139,8 @@ If two or more results in this run's pool (from the same company, or sharing the
 
 ### Step 3: Quick Fit Assessment
 
+Apply `04-job-evaluation.md`'s Eligibility Gate and Location & Logistics rules using `.local/profile.md` in private profile mode. Relocation to an agreed destination is allowed. Explicit no-sponsorship is an exclusion when sponsorship is needed; unknown sponsorship remains a clearly conditional lead. Keep exclusions and retrieval failures visible, and never label an unverified relocation lead as a confirmed match.
+
 For each new job, do a rapid fit check (NOT the full evaluation from `04-job-evaluation.md` - just a quick signal):
 
 - **High match**: Role directly involves your core skills

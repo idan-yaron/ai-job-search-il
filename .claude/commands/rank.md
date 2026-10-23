@@ -87,6 +87,8 @@ Each agent returns a JSON array, one object per job:
 
 Scoring uses the dimension definitions from `04-job-evaluation.md` verbatim. The honesty rule applies to triage too: gaps are stated, never smoothed over, and a posting that is a poor fit gets a low score even if it looks prestigious.
 
+Apply that framework's Eligibility Gate as well as its location rules. Pass sponsorship needs and allowed destinations in the rubric. Carry an eligibility FAIL/FLAG into `location_verdict` and quote the restriction or unknown in `gaps`; unknown sponsorship must never become a clean PASS. Relocation to an agreed destination is not itself a veto. A hard eligibility failure is excluded without scoring; use zeroes solely as the existing schema's placeholders and clearly report the unscored exclusion.
+
 ---
 
 ## Step 3: Aggregate and Rank
@@ -95,7 +97,7 @@ Back in the main context, for each scored job:
 
 1. Compute the overall score with the weighting from `04-job-evaluation.md` (Technical 30%, Experience 25%, Behavioral 15%, Career Alignment 30%; location is unweighted).
 2. Map to the framework's verdict bands (Strong Fit 75+, Good Fit 60-74, Moderate Fit 45-59, Weak Fit 30-44, Poor Fit <30).
-3. **Location veto:** `FAIL` (e.g. requires relocation) excludes the job from the shortlist no matter the score - list it separately with the reason. `FLAG` (e.g. heavy travel) stays in the ranking but carries a visible ⚠ marker for the user to judge.
+3. **Location veto:** `FAIL` (e.g. relocation outside agreed destinations or explicit no-sponsorship when sponsorship is needed) excludes the job from the shortlist no matter the score - list it separately with the reason. `FLAG` (e.g. sponsorship unknown or heavy travel) stays in the ranking but carries a visible ⚠ marker for the user to judge.
 4. **Language veto:** `language_gate: FAIL` (posting requires a language the candidate hasn't declared at all) excludes the job from the shortlist, same as a location FAIL - list it under "Excluded" with the quoted requirement from `language_note`. `language_gate: FLAG` (declared language, requirement reads above the declared level) stays in the ranking with a visible ⚠ marker and `language_note` shown alongside the score, same treatment as a location FLAG.
 5. **Deadline urgency:** a deadline within 7 days gets a 🔥 marker and wins ties. A deadline that has already passed moves the job to `expired`. Take the deadline from the scoring agent's Step 2 JSON for a job scored in this run, and from the `deadline` Step 1's `candidates` already returned for one that already carries it - a stored value costs no fetch, so urgency is re-derived on every run without re-reading the posting. When both exist and disagree, the freshly scored value wins and replaces the stored one. A stored value that does not parse as `YYYY-MM-DD` is skipped for urgency as well - rule 6's defensive-parse rule applies wherever a stored deadline is compared.
 6. **Expiry sweep over already-ranked entries.** Before presenting, check the stored `deadline` of every `ranked` entry this run did not re-score:
@@ -178,7 +180,7 @@ Swept <S> previously ranked entries (<E> newly expired, <C> closing soon).
 | Score | Verdict | Title | Company | One-line reason | URL |
 
 ### Excluded
-- <Title> at <Company> - location FAIL: requires relocation - [Link](...)
+- <Title> at <Company> - location FAIL: relocation outside agreed destinations - [Link](...)
 - <Title> at <Company> - language FAIL: requires fluent Polish (not in your Languages table) - [Link](...)
 - <Title> at <Company> - expired <date> - [Link](...)
 

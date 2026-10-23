@@ -20,6 +20,7 @@ venv/
 build/
 
 # Personal data (never commit these)
+.local/
 salary_data.json
 # Match at any depth: the job-scraper skill resolves `job_scraper/` relative to
 # its own directory, so these land at .claude/skills/job-scraper/job_scraper/*.

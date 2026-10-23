@@ -1,5 +1,11 @@
 # Setup Guide
 
+## Codex setup for this fork
+
+Start with the Codex section in [README.md](README.md) and [AGENTS.md](AGENTS.md). Open this folder in Codex, read `.local/profile.md` if present, and continue using plain-language requests. Personal facts stay in ignored local files; do not populate the tracked upstream profile templates below. Bun and document compilers are optional until their workflows are needed.
+
+The remainder is the upstream Claude Code setup guide.
+
 Step-by-step instructions for getting the AI Job Search framework running.
 
 ## 1. Prerequisites

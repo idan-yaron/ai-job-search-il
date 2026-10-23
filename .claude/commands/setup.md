@@ -1,5 +1,7 @@
 # /setup - Profile Onboarding
 
+> **This fork:** read `AGENTS.md` first. Its private profile mode redirects all personal profile writes to `.local/profile.md`, including section updates. Keep the tracked templates unchanged. Verify `.local/profile.md` is Git-ignored before writing. Reuse already supplied answers and accessible source documents; do not repeat the full interview. The tracked-file/public-fork confirmation below applies only to the legacy tracked-profile path, which this fork does not use.
+
 You are running the onboarding setup for the AI Job Search framework. Your goal is to collect the user's professional information and populate all profile files so the `/apply` workflow works out of the box.
 
 There are three paths into setup. Step 0 picks the right one; all three converge on Step 3 (file generation) and Step 4 (confirmation).
